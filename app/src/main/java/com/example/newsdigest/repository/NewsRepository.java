@@ -20,9 +20,9 @@ public class NewsRepository {
 
     private static final String TAG = NewsRepository.class.getName();
 
-    private ApiService apiService;
+    private static ApiService apiService;
 
-    public LiveData<SearchResponse> getNews() {
+    public static LiveData<SearchResponse> getNews() {
 
         apiService = BasicUtils.connectApi().create(ApiService.class);
 
