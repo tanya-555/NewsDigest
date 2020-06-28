@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.newsdigest"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,4 +43,7 @@ dependencies {
     // Parcel
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+
+    //for mvp-lce
+    implementation group: 'com.hannesdorfmann.mosby3', name: 'mvp-conductor', version: '3.1.0'
 }
