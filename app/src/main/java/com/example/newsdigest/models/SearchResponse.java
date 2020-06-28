@@ -1,17 +1,15 @@
 package com.example.newsdigest.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import org.parceler.Parcel;
 
+@Parcel
 public class SearchResponse {
 
-    @SerializedName("status")
-    public String status;
+    @SerializedName("response")
+    @Expose
+    public SearchResults response;
 
-    @SerializedName("total")
-    public int total;
-
-    @SerializedName("results")
-    public List<SearchResults> resultsList;
 }
