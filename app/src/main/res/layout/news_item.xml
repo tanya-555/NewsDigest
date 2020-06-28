@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="response"
+            type="com.example.newsdigest.models.SearchResults" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="News of the day"
+            android:text="@{response.webTitle}"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/size_40dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_15dp"
+            android:layout_below="@+id/tv_title"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/size_10dp"
+            android:padding="@dimen/size_5dp"
+            android:text="@{response.sectionName}"/>
+
+    </RelativeLayout>
+
+</layout>
