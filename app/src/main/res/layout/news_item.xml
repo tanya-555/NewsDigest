@@ -11,6 +11,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_white"
         android:layout_margin="@dimen/size_10dp"
         android:orientation="vertical">
 
@@ -21,14 +22,16 @@
             tools:text="News of the day"
             android:text="@{response.webTitle}"
             android:textColor="@color/color_black"
-            android:textSize="@dimen/size_40dp"
+            android:textSize="@dimen/size_20dp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_section"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_15dp"
+            android:layout_height="@dimen/size_25dp"
             android:layout_below="@+id/tv_title"
             android:textColor="@color/color_white"
+            android:textStyle="bold"
             android:textSize="@dimen/size_10dp"
             android:padding="@dimen/size_5dp"
             android:text="@{response.sectionName}"/>
