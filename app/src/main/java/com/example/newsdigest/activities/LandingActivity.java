@@ -51,8 +51,7 @@ public class LandingActivity extends AppCompatActivity {
         disposable = new CompositeDisposable();
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         observeViewModel(newsViewModel);
-        binding.contentView.setVisibility(View.GONE);
-        binding.loadingView.setVisibility(View.VISIBLE);
+        showLoadingView();
         initRecyclerView();
     }
 
@@ -119,5 +118,10 @@ public class LandingActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         disposable.dispose();
+    }
+
+    private void showLoadingView() {
+        binding.contentView.setVisibility(View.GONE);
+        binding.loadingView.setVisibility(View.VISIBLE);
     }
 }

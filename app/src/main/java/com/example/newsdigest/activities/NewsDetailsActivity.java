@@ -1,6 +1,7 @@
 package com.example.newsdigest.activities;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +18,6 @@ import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class NewsDetailsActivity extends AppCompatActivity {
 
@@ -33,10 +33,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.news_details_activity, null, false);
+        binding = DataBindingUtil.setContentView(this, R.layout.news_details_activity);
         toolbarLayout = binding.detailsToolbar;
         backBtn = toolbarLayout.findViewById(R.id.iv_back);
-        setContentView(binding.getRoot());
+        showLoadingView();
         disposable = new CompositeDisposable();
         getUrl();
         initListener();
@@ -45,7 +45,12 @@ public class NewsDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        binding.webView.loadUrl(url);
+        showLoadingView();
+        if(TextUtils.isEmpty(url)) {
+            showErrorView();
+        } else {
+            showContentView();
+        }
     }
 
     private void getUrl() {
@@ -66,5 +71,24 @@ public class NewsDetailsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         disposable.dispose();
+    }
+
+    private void showLoadingView() {
+        binding.contentView.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.GONE);
+        binding.loadingView.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorView() {
+        binding.loadingView.setVisibility(View.GONE);
+        binding.contentView.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.VISIBLE);
+    }
+
+    private void showContentView() {
+        binding.loadingView.setVisibility(View.GONE);
+        binding.errorView.setVisibility(View.GONE);
+        binding.contentView.setVisibility(View.VISIBLE);
+        binding.contentView.loadUrl(url);
     }
 }
