@@ -53,10 +53,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        disposable.add(RxView.clicks(backBtn).subscribeOn(Schedulers.io())
+        disposable.add(RxView.clicks(backBtn)
                   .observeOn(AndroidSchedulers.mainThread())
                   .subscribe( s -> {
-                      finish();
+                      this.finish();
                   }, e -> {
                       Log.d(TAG, Objects.requireNonNull(e.getMessage()));
                   }));
