@@ -75,6 +75,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
             case "sport" : section.setBackgroundColor(Color.parseColor("#965959")); break;
             case "business" : section.setBackgroundColor(Color.parseColor("#50519a")); break;
             case "uk news": section.setBackgroundColor(Color.parseColor("#329590")); break;
+            case "books" : section.setBackgroundColor(Color.parseColor("#7a2464")); break;
+            case "education" : section.setBackgroundColor(Color.parseColor("#ffae00")); break;
             default: section.setBackgroundColor(Color.parseColor("#439752")); break;
         }
     }
