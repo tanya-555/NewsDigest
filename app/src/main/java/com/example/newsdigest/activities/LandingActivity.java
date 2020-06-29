@@ -1,6 +1,7 @@
 package com.example.newsdigest.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -21,23 +22,32 @@ import com.example.newsdigest.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 public class LandingActivity extends AppCompatActivity {
 
-    private static final String STATUS_OK = "ok";
+    private static final String WEB_URL = "web_url";
+    private static final String TAG = LandingActivity.class.getName();
 
     private LandingActivityBinding binding;
     private NewsViewModel newsViewModel;
     private NewsAdapter adapter;
     private RecyclerView recyclerView;
     private List<NewsList> newsList;
+    private CompositeDisposable disposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.landing_activity, null, false);
+        binding = DataBindingUtil.setContentView(this, R.layout.landing_activity);
         setContentView(binding.getRoot());
         newsList = new ArrayList<>();
+        disposable = new CompositeDisposable();
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         observeViewModel(newsViewModel);
         binding.contentView.setVisibility(View.GONE);
@@ -66,6 +76,7 @@ public class LandingActivity extends AppCompatActivity {
             }
             adapter.setList(newsList);
             adapter.notifyDataSetChanged();
+            subscribeToNewItemClicked(adapter.getNewsItemClickSubject());
         }
     }
 
@@ -85,5 +96,27 @@ public class LandingActivity extends AppCompatActivity {
         recyclerView = contentView.findViewById(R.id.rv_search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void subscribeToNewItemClicked(PublishSubject<String> newsItemClickSubject) {
+        disposable.add(newsItemClickSubject.subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(url -> {
+                      launchDetailsActivity(url);
+                  }, e -> {
+                      Log.d(TAG, Objects.requireNonNull(e.getMessage()));
+                  }));
+    }
+
+    private void launchDetailsActivity(String webUrl) {
+//        Intent intent = new Intent(LandingActivity.this, NewsDetailsActivity.class);
+//        intent.putExtra(WEB_URL, webUrl);
+//        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 }

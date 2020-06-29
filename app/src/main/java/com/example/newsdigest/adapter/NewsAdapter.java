@@ -2,6 +2,7 @@ package com.example.newsdigest.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.newsdigest.databinding.NewsItemBinding;
 import com.example.newsdigest.models.NewsList;
 import com.example.newsdigest.viewholder.NewsViewHolder;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.PublishSubject;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
@@ -23,10 +28,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     private NewsItemBinding binding;
     private Context context;
     private List<NewsList> resultsList;
+    private PublishSubject<String> newsItemClickSubject;
 
     public NewsAdapter(Context context) {
         this.context = context;
         resultsList = new ArrayList<>();
+        newsItemClickSubject = PublishSubject.create();
     }
 
     @NonNull
@@ -41,6 +48,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         NewsList news = resultsList.get(position);
         holder.bindData(news);
         setSectionColor(holder.tvSection);
+        RxView.clicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
+                     .subscribe(s -> {
+                         newsItemClickSubject.onNext(news.webUrl);
+                     }, e -> {
+                         Log.d(TAG, e.getMessage());
+                     });
     }
 
     @Override
@@ -64,5 +77,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
             case "uk news": section.setBackgroundColor(Color.parseColor("#329590")); break;
             default: section.setBackgroundColor(Color.parseColor("#439752")); break;
         }
+    }
+
+    public PublishSubject<String> getNewsItemClickSubject() {
+        return newsItemClickSubject;
     }
 }
