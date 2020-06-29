@@ -48,15 +48,27 @@
                 android:padding="@dimen/size_10dp"
                 android:textColorHint="@color/color_login_text" />
 
-            <Button
-                android:id="@+id/btn_login"
+            <TextView
+                android:id="@+id/tv_confirm_password"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="@dimen/size_40dp"
                 android:layout_below="@+id/tv_password"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/size_40dp"
+                android:background="@color/color_login_textview"
+                android:hint="@string/confirm_password"
+                android:padding="@dimen/size_10dp"
+                android:textColorHint="@color/color_login_text" />
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="@dimen/size_200dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_below="@+id/tv_confirm_password"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_20dp"
                 android:background="@color/color_deep_red"
-                android:text="@string/login"
+                android:text="@string/register"
                 android:textSize="@dimen/size_15dp"
                 android:textStyle="bold" />
 
