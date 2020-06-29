@@ -1,5 +1,6 @@
 package com.example.newsdigest.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -109,9 +110,9 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void launchDetailsActivity(String webUrl) {
-//        Intent intent = new Intent(LandingActivity.this, NewsDetailsActivity.class);
-//        intent.putExtra(WEB_URL, webUrl);
-//        startActivity(intent);
+        Intent intent = new Intent(LandingActivity.this, NewsDetailsActivity.class);
+        intent.putExtra(WEB_URL, webUrl);
+        startActivity(intent);
     }
 
     @Override
