@@ -102,4 +102,10 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
         this.finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
+    }
 }

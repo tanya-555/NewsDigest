@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,13 +43,16 @@ public class LandingActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<NewsList> newsList;
     private CompositeDisposable disposable;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.landing_activity);
         setContentView(binding.getRoot());
+        setSupportActionBar(findViewById(R.id.toolbar));
         newsList = new ArrayList<>();
+        setupNavigationDrawer();
         disposable = new CompositeDisposable();
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         observeViewModel(newsViewModel);
@@ -123,5 +128,12 @@ public class LandingActivity extends AppCompatActivity {
     private void showLoadingView() {
         binding.contentView.setVisibility(View.GONE);
         binding.loadingView.setVisibility(View.VISIBLE);
+    }
+
+    private void setupNavigationDrawer() {
+        DrawerLayout dl = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, dl, R.string.login, R.string.login);
+        dl.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
 }
