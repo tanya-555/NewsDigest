@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/account"
-        android:icon="@drawable/login_icon"
+        android:icon="@drawable/resetpass"
         android:title="@string/reset_password" />
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/login_icon"
+        android:icon="@drawable/bookmark"
         android:title="@string/bookmarks" />
     <item
         android:id="@+id/mycart"
-        android:icon="@drawable/login_icon"
+        android:icon="@drawable/logout"
         android:title="@string/logout" />
 </menu>
