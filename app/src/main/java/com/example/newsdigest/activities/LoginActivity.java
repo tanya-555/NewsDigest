@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         if (sharedPreferences.contains(PASSWORD)) {
-            if (!username.equals(sharedPreferences.getString(PASSWORD, ""))) {
+            if (!password.equals(sharedPreferences.getString(PASSWORD, ""))) {
                 Toast.makeText(this, INVALID_PASSWORD, Toast.LENGTH_LONG).show();
                 return;
             }
