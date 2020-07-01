@@ -4,9 +4,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/login_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_bg"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -35,6 +35,7 @@
                 android:background="@color/color_login_textview"
                 android:hint="@string/user_name"
                 android:padding="@dimen/size_10dp"
+                android:textColor="@color/color_login_text"
                 android:textColorHint="@color/color_login_text" />
 
             <EditText
@@ -47,6 +48,7 @@
                 android:background="@color/color_login_textview"
                 android:hint="@string/password"
                 android:padding="@dimen/size_10dp"
+                android:textColor="@color/color_login_text"
                 android:textColorHint="@color/color_login_text" />
 
             <Button

@@ -7,14 +7,17 @@ import com.example.newsdigest.models.RegisterModel;
 
 public class RegisterViewModel extends ViewModel {
 
-    MutableLiveData<RegisterModel> registerModelLiveData;
+    final MutableLiveData<RegisterModel> registerModelLiveData;
 
-    RegisterViewModel() {
+    public RegisterViewModel() {
         registerModelLiveData = new MutableLiveData<>();
-        init();
     }
 
-    private void init() {
+    public void setData(RegisterModel registerModel) {
+        registerModelLiveData.setValue(registerModel);
+    }
 
+    public MutableLiveData<RegisterModel> getRegisterModel() {
+        return  registerModelLiveData;
     }
 }
