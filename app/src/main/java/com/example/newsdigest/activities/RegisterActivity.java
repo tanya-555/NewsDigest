@@ -33,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = RegisterActivity.class.getName();
     private static final String USERNAME = "user_name";
     private static final String PASSWORD = "password";
+    private static final String MANDATORY_FIELDS = "All fields are mandatory!";
+    private static final String PASSWORD_MISMATCH = "Passwords do not match!";
 
     private RegisterActivityBinding binding;
     private RegisterViewModel registerViewModel;
@@ -77,11 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
         String password = binding.tvPassword.getText().toString();
         String confirmPassword = binding.tvConfirmPassword.getText().toString();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(this, "All field are mandatory!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, MANDATORY_FIELDS, Toast.LENGTH_LONG).show();
             return;
         }
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, PASSWORD_MISMATCH, Toast.LENGTH_LONG).show();
             return;
         }
         saveDetailsInPreferences(username, password);

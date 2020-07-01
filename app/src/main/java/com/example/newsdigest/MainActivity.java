@@ -33,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
         if(sharedPreferences.contains(USERNAME)) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            this.finish();
         } else {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
+            this.finish();
         }
     }
 }
