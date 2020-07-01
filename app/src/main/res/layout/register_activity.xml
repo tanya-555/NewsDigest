@@ -65,7 +65,7 @@
                 android:textColorHint="@color/color_login_text" />
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_register"
                 android:layout_width="@dimen/size_200dp"
                 android:layout_height="@dimen/size_40dp"
                 android:layout_below="@+id/tv_confirm_password"
