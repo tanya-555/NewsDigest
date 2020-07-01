@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGGED_IN, LOGGED_IN);
+        editor.apply();
         launchLandingActivity();
     }
 
