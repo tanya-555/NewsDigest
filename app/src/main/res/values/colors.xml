@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="color_white">#ffffff</color>
+    <color name="color_toolbar_bg">#498dc7</color>
+    <color name="color_black">#000000</color>
+    <color name="color_gray">#e6e4e4</color>
+    <color name="color_login_text">#9d8888</color>
+    <color name="color_login_textview">#e2d8d8</color>
+    <color name="color_deep_red">#821919</color>
+</resources>
