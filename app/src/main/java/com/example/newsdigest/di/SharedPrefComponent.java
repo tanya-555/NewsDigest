@@ -1,6 +1,7 @@
 package com.example.newsdigest.di;
 
 import com.example.newsdigest.MainActivity;
+import com.example.newsdigest.activities.LandingActivity;
 import com.example.newsdigest.activities.LoginActivity;
 import com.example.newsdigest.activities.RegisterActivity;
 
@@ -17,4 +18,6 @@ public interface SharedPrefComponent {
     void inject(LoginActivity loginActivity);
 
     void inject(RegisterActivity registerActivity);
+
+    void inject(LandingActivity landingActivity);
 }
