@@ -9,4 +9,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="logout">Logout</string>
+    <string name="current_password">Enter current password</string>
+    <string name="new_password">Enter new password</string>
+    <string name="save_password">SAVE PASSWORD</string>
 </resources>
