@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class LandingActivity extends AppCompatActivity {
     private static final String LOGGED_OUT = "Successfully logged out";
     private static final String MANDATORY_FIELDS = "All fields are mandatory!";
     private static final String PASSWORD = "password";
+    private static final String USERNAME = "user_name";
     private static final String INVALID_CURRENT_PASSWORD = "Current password is invalid!";
     private static final String RESET_SUCCESS = "Password reset successfully!";
     private static final String TAG = LandingActivity.class.getName();
@@ -77,6 +79,7 @@ public class LandingActivity extends AppCompatActivity {
                 build().inject(this);
         newsList = new ArrayList<>();
         setupNavigationDrawer();
+        setNavUsername();
         disposable = new CompositeDisposable();
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         observeViewModel(newsViewModel);
@@ -228,5 +231,13 @@ public class LandingActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PASSWORD, newPassword);
         editor.apply();
+    }
+
+    private void setNavUsername() {
+        View navUser = binding.navigationView.getHeaderView(0);
+        TextView username = navUser.findViewById(R.id.username);
+        if(sharedPreferences.contains(USERNAME)) {
+            username.setText(sharedPreferences.getString(USERNAME, ""));
+        }
     }
 }
