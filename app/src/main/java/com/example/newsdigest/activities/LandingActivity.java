@@ -1,11 +1,16 @@
 package com.example.newsdigest.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,7 +20,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +53,10 @@ public class LandingActivity extends AppCompatActivity {
     private static final String WEB_URL = "web_url";
     private static final String IS_LOGGED_IN = "is_logged_in";
     private static final String LOGGED_OUT = "Successfully logged out";
+    private static final String MANDATORY_FIELDS = "All fields are mandatory!";
+    private static final String PASSWORD = "password";
+    private static final String INVALID_CURRENT_PASSWORD = "Current password is invalid!";
+    private static final String RESET_SUCCESS = "Password reset successfully!";
     private static final String TAG = LandingActivity.class.getName();
 
     private LandingActivityBinding binding;
@@ -77,12 +85,9 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void observeViewModel(NewsViewModel newsViewModel) {
-        newsViewModel.getNewsList().observe(this, new Observer<SearchResponse>() {
-            @Override
-            public void onChanged(SearchResponse searchResponse) {
-                binding.loadingView.setVisibility(View.GONE);
-                setData(searchResponse);
-            }
+        newsViewModel.getNewsList().observe(this, searchResponse -> {
+            binding.loadingView.setVisibility(View.GONE);
+            setData(searchResponse);
         });
     }
 
@@ -156,6 +161,7 @@ public class LandingActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.reset:
+                        resetPassword();
                         break;
                     case R.id.bookmark:
                         break;
@@ -182,5 +188,45 @@ public class LandingActivity extends AppCompatActivity {
     private void launchLoginActivity() {
         Intent intent = new Intent(LandingActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void resetPassword() {
+        showResetPasswordDialog();
+    }
+
+    private void showResetPasswordDialog() {
+        Dialog dialog = new Dialog(Objects.requireNonNull(this));
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.reset_password_dialog);
+        Button saveBtn = dialog.findViewById(R.id.btn_save);
+        saveBtn.setOnClickListener(v -> {
+            String currentPassword = ((EditText)dialog.findViewById(R.id.et_current_password)).getText().toString();
+            String newPassword = ((EditText)dialog.findViewById(R.id.et_new_password)).getText().toString();
+            if(validateInput(currentPassword, newPassword)) {
+                saveNewPassword(newPassword);
+                Toast.makeText(this, RESET_SUCCESS, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private boolean validateInput(String currentPassword, String newPassword) {
+        if (TextUtils.isEmpty(currentPassword) || TextUtils.isEmpty(newPassword)) {
+            Toast.makeText(this, MANDATORY_FIELDS, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!currentPassword.equals(sharedPreferences.getString(PASSWORD, ""))) {
+            Toast.makeText(this, INVALID_CURRENT_PASSWORD, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void saveNewPassword(String newPassword) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PASSWORD, newPassword);
+        editor.apply();
     }
 }
