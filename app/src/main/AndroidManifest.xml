@@ -22,6 +22,7 @@
         <activity android:name=".activities.LandingActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.BookmarkActivity" />
     </application>
 
 </manifest>

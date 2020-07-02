@@ -30,9 +30,12 @@ import com.example.newsdigest.adapter.NewsAdapter;
 import com.example.newsdigest.databinding.LandingActivityBinding;
 import com.example.newsdigest.di.DaggerSharedPrefComponent;
 import com.example.newsdigest.di.SharedPrefModule;
+import com.example.newsdigest.models.BookmarkModel;
 import com.example.newsdigest.models.NewsList;
 import com.example.newsdigest.models.SearchResponse;
+import com.example.newsdigest.viewmodel.BookmarkViewModel;
 import com.example.newsdigest.viewmodel.NewsViewModel;
+import com.example.newsdigest.viewmodelfactory.BookmarkViewModelFactory;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -59,6 +62,7 @@ public class LandingActivity extends AppCompatActivity {
     private static final String USERNAME = "user_name";
     private static final String INVALID_CURRENT_PASSWORD = "Current password is invalid!";
     private static final String RESET_SUCCESS = "Password reset successfully!";
+    private static final String BOOKMARKED = "Item bookmarked!";
     private static final String TAG = LandingActivity.class.getName();
 
     private LandingActivityBinding binding;
@@ -68,6 +72,8 @@ public class LandingActivity extends AppCompatActivity {
     private List<NewsList> newsList;
     private CompositeDisposable disposable;
     private ActionBarDrawerToggle drawerToggle;
+    private BookmarkViewModel bookmarkViewModel;
+    private List<BookmarkModel> bookmarkModelList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,13 +84,23 @@ public class LandingActivity extends AppCompatActivity {
         DaggerSharedPrefComponent.builder().sharedPrefModule(new SharedPrefModule(this)).
                 build().inject(this);
         newsList = new ArrayList<>();
+        bookmarkModelList = new ArrayList<>();
         setupNavigationDrawer();
         setNavUsername();
+        bookmarkViewModel = new ViewModelProvider(this, new BookmarkViewModelFactory(getApplication()))
+                .get(BookmarkViewModel.class);
         disposable = new CompositeDisposable();
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
+        observeBookmarkViewModel(bookmarkViewModel);
         observeViewModel(newsViewModel);
         showLoadingView();
         initRecyclerView();
+    }
+
+    private void observeBookmarkViewModel(BookmarkViewModel bookmarkViewModel) {
+        bookmarkViewModel.getBookmarksLiveData().observe(this, bookmarkList -> {
+            updateBookmarkList(bookmarkList);
+        });
     }
 
     private void observeViewModel(NewsViewModel newsViewModel) {
@@ -106,6 +122,7 @@ public class LandingActivity extends AppCompatActivity {
             adapter.setList(newsList);
             adapter.notifyDataSetChanged();
             subscribeToNewItemClicked(adapter.getNewsItemClickSubject());
+            subscribeToNewsItemLongClicked(adapter.getNewsItemLongClickSubject());
         }
     }
 
@@ -135,6 +152,16 @@ public class LandingActivity extends AppCompatActivity {
                 }, e -> {
                     Log.d(TAG, Objects.requireNonNull(e.getMessage()));
                 }));
+    }
+
+    private void subscribeToNewsItemLongClicked(PublishSubject<NewsList> newsItemLongClickSubject) {
+        disposable.add(newsItemLongClickSubject.subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(news -> {
+                      bookmarkNewsItem(news);
+                  }, e -> {
+                      Log.d(TAG, Objects.requireNonNull(e.getMessage()));
+                  }));
     }
 
     private void launchDetailsActivity(String webUrl) {
@@ -167,6 +194,7 @@ public class LandingActivity extends AppCompatActivity {
                         resetPassword();
                         break;
                     case R.id.bookmark:
+                        showBookmarks();
                         break;
                     case R.id.logout:
                         exitLandingScreen();
@@ -239,5 +267,29 @@ public class LandingActivity extends AppCompatActivity {
         if(sharedPreferences.contains(USERNAME)) {
             username.setText(sharedPreferences.getString(USERNAME, ""));
         }
+    }
+
+    private void bookmarkNewsItem(NewsList news) {
+        BookmarkModel model = new BookmarkModel();
+        model.setSection(news.sectionName);
+        model.setTitle(news.webTitle);
+        model.setUrl(news.webUrl);
+        bookmarkViewModel.insertBookmark(model);
+        Toast.makeText(this, BOOKMARKED, Toast.LENGTH_LONG).show();
+    }
+
+    private void showBookmarks() {
+        launchBookmarkActivity();
+    }
+
+    private void updateBookmarkList(List<BookmarkModel> bookmarkList) {
+        bookmarkModelList.clear();
+        if(bookmarkList != null) {
+            bookmarkModelList.addAll(bookmarkList);
+        }
+    }
+
+    private void launchBookmarkActivity() {
+
     }
 }

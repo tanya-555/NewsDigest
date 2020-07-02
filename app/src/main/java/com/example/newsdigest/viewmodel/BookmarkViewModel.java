@@ -13,15 +13,13 @@ import java.util.List;
 public class BookmarkViewModel extends ViewModel {
 
     private BookmarksRepository repository;
-    private MutableLiveData<List<BookmarkModel>> bookmarksLiveData;
 
     public BookmarkViewModel(Application application) {
         repository = new BookmarksRepository(application);
-        bookmarksLiveData = repository.getBookmarks();
     }
 
     public MutableLiveData<List<BookmarkModel>> getBookmarksLiveData() {
-        return bookmarksLiveData;
+        return repository.getBookmarks();
     }
 
     public void insertBookmark(BookmarkModel bookmarkModel) {

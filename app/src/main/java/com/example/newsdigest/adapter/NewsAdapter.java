@@ -1,5 +1,6 @@
 package com.example.newsdigest.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -24,16 +25,21 @@ import io.reactivex.subjects.PublishSubject;
 public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
     private static final String TAG = NewsAdapter.class.getName();
+    private static final String CONFIRM_BOOKMARK = "Do you want to bookmark this news?";
+    private static final String YES = "yes";
+    private static final String NO = "no";
 
     private NewsItemBinding binding;
     private Context context;
     private List<NewsList> resultsList;
     private PublishSubject<String> newsItemClickSubject;
+    private PublishSubject<NewsList> newsItemLongClickSubject;
 
     public NewsAdapter(Context context) {
         this.context = context;
         resultsList = new ArrayList<>();
         newsItemClickSubject = PublishSubject.create();
+        newsItemLongClickSubject = PublishSubject.create();
     }
 
     @NonNull
@@ -51,6 +57,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         RxView.clicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
                      .subscribe(s -> {
                          newsItemClickSubject.onNext(news.webUrl);
+                     }, e -> {
+                         Log.d(TAG, e.getMessage());
+                     });
+        RxView.longClicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
+                     .subscribe(s -> {
+                         openConfirmationDialog(news, position);
                      }, e -> {
                          Log.d(TAG, e.getMessage());
                      });
@@ -83,5 +95,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
     public PublishSubject<String> getNewsItemClickSubject() {
         return newsItemClickSubject;
+    }
+
+    public PublishSubject<NewsList> getNewsItemLongClickSubject() {
+        return newsItemLongClickSubject;
+    }
+
+    private void openConfirmationDialog(NewsList news, int position) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setMessage(CONFIRM_BOOKMARK);
+        alertDialog.setCancelable(true);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, YES,
+                (dialog, which) -> {
+                    newsItemLongClickSubject.onNext(news);
+                    alertDialog.dismiss();
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, NO,
+                (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
     }
 }
