@@ -1,4 +1,4 @@
-package com.example.newsdigest.repository.BookmarksRepository;
+package com.example.newsdigest.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;

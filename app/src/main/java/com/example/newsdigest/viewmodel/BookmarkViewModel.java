@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.newsdigest.models.BookmarkModel;
-import com.example.newsdigest.repository.BookmarksRepository.BookmarksRepository;
+import com.example.newsdigest.repository.BookmarksRepository;
 
 import java.util.List;
 

@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="News of the day"
+            android:padding="@dimen/size_5dp"
             android:text="@{response.title}"
             android:textColor="@color/color_black"
             android:textSize="@dimen/size_20dp"
