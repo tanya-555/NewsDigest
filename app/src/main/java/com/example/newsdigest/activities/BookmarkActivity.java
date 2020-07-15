@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public class BookmarkActivity extends AppCompatActivity {
         disposable = new CompositeDisposable();
         bookmarkModelList = new ArrayList<>();
         bookmarkModelList = (List<BookmarkModel>)getIntent().getExtras().getSerializable(BOOKMARK_LIST);
+        ((TextView)binding.detailsToolbar.findViewById(R.id.tv_detail)).setText(R.string.toolbar_header);
         showLoadingView();
         initListener();
         initRecyclerView();
