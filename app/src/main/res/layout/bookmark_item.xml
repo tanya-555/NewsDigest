@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="response"
+            type="com.example.newsdigest.models.BookmarkModel" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:layout_margin="@dimen/size_10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="News of the day"
+            android:text="@{response.title}"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/size_20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_section"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_25dp"
+            android:layout_below="@+id/tv_title"
+            android:textColor="@color/color_white"
+            android:textStyle="bold"
+            android:textSize="@dimen/size_10dp"
+            android:padding="@dimen/size_5dp"
+            android:text="@{response.section}"/>
+
+    </RelativeLayout>
+
+</layout>
