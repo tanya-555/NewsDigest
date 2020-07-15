@@ -4,18 +4,31 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "bookmarks")
-public class BookmarkModel {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
+@Entity(tableName = "bookmarks")
+public class BookmarkModel implements Serializable {
+
+    @SerializedName("id")
+    @Expose
     @PrimaryKey(autoGenerate = true)
     private int bookmarkId;
 
+    @SerializedName("title")
+    @Expose
     @ColumnInfo(name = "title")
     private String title;
 
+    @SerializedName("url")
+    @Expose
     @ColumnInfo(name = "url")
     private String url;
 
+    @SerializedName("section")
+    @Expose
     @ColumnInfo(name = "section")
     private String section;
 
