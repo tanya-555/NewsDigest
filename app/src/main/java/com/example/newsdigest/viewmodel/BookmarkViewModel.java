@@ -2,7 +2,7 @@ package com.example.newsdigest.viewmodel;
 
 import android.app.Application;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.newsdigest.models.BookmarkModel;
@@ -18,7 +18,7 @@ public class BookmarkViewModel extends ViewModel {
         repository = new BookmarksRepository(application);
     }
 
-    public MutableLiveData<List<BookmarkModel>> getBookmarksLiveData() {
+    public LiveData<List<BookmarkModel>> getBookmarksLiveData() {
         return repository.getBookmarks();
     }
 

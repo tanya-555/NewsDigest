@@ -1,5 +1,6 @@
 package com.example.newsdigest.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -13,7 +14,7 @@ public interface BookmarkOperationsDao {
 
     //Query to get list of bookmarks
     @Query("SELECT * from bookmarks")
-    List<BookmarkModel> getBookmarkList();
+    LiveData<List<BookmarkModel>> getBookmarkList();
 
     //Query to insert a bookmark
     @Insert

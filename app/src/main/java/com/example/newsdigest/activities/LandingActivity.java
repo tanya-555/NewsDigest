@@ -38,6 +38,7 @@ import com.example.newsdigest.viewmodel.NewsViewModel;
 import com.example.newsdigest.viewmodelfactory.BookmarkViewModelFactory;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -63,6 +64,7 @@ public class LandingActivity extends AppCompatActivity {
     private static final String INVALID_CURRENT_PASSWORD = "Current password is invalid!";
     private static final String RESET_SUCCESS = "Password reset successfully!";
     private static final String BOOKMARKED = "Item bookmarked!";
+    private static final String BOOKMARK_LIST = "bookmark_list";
     private static final String TAG = LandingActivity.class.getName();
 
     private LandingActivityBinding binding;
@@ -290,6 +292,8 @@ public class LandingActivity extends AppCompatActivity {
     }
 
     private void launchBookmarkActivity() {
-
+        Intent intent = new Intent(LandingActivity.this, BookmarkActivity.class);
+        intent.putExtra(BOOKMARK_LIST, (Serializable)bookmarkModelList);
+        startActivity(intent);
     }
 }
