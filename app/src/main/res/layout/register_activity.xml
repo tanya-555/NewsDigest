@@ -32,10 +32,10 @@
                 android:layout_below="@+id/iv_login"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_20dp"
-                android:background="@color/color_login_textview"
+                android:background="@drawable/edit_text_drawable"
                 android:hint="@string/user_name"
                 android:padding="@dimen/size_10dp"
-                android:textColor="@color/color_login_text"
+                android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
             <EditText
@@ -48,7 +48,7 @@
                 android:background="@drawable/edit_text_drawable"
                 android:hint="@string/password"
                 android:padding="@dimen/size_10dp"
-                android:textColor="@color/color_login_text"
+                android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
             <EditText
@@ -61,7 +61,7 @@
                 android:background="@drawable/edit_text_drawable"
                 android:hint="@string/confirm_password"
                 android:padding="@dimen/size_10dp"
-                android:textColor="@color/color_login_text"
+                android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
             <Button
