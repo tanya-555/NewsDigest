@@ -1,5 +1,6 @@
 package com.example.newsdigest.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,11 +24,14 @@ import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 public class BookmarkActivity extends AppCompatActivity {
 
     private static final String TAG = BookmarkActivity.class.getName();
     private static final String BOOKMARK_LIST = "bookmark_list";
+    private static final String WEB_URL = "web_url";
 
     private List<BookmarkModel> bookmarkModelList;
     private BookmarkActivityBinding binding;
@@ -87,7 +91,19 @@ public class BookmarkActivity extends AppCompatActivity {
             showContentView();
             adapter.setBookmarkModelList(bookmarkModelList);
             adapter.notifyDataSetChanged();
+            subscribeToBookmarkClick(adapter.getBookmarkClickSubject());
+
         }
+    }
+
+    private void subscribeToBookmarkClick(PublishSubject<String> bookmarkClickSubject) {
+        disposable.add(bookmarkClickSubject.subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(url -> {
+                      launchDetailsActivity(url);
+                  }, e -> {
+                      Log.d(TAG, Objects.requireNonNull(e.getMessage()));
+                  }));
     }
 
     private void showErrorView() {
@@ -100,6 +116,12 @@ public class BookmarkActivity extends AppCompatActivity {
         binding.errorView.setVisibility(View.GONE);
         binding.loadingView.setVisibility(View.GONE);
         binding.contentView.setVisibility(View.VISIBLE);
+    }
+
+    private void launchDetailsActivity(String url) {
+        Intent intent = new Intent(BookmarkActivity.this, NewsDetailsActivity.class);
+        intent.putExtra(WEB_URL, url);
+        startActivity(intent);
     }
 
 }

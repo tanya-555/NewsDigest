@@ -2,6 +2,7 @@ package com.example.newsdigest.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,18 +13,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.newsdigest.databinding.BookmarkItemBinding;
 import com.example.newsdigest.models.BookmarkModel;
 import com.example.newsdigest.viewholder.BookmarkViewHolder;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.subjects.PublishSubject;
+
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
+
+    private static final String TAG = BookmarkAdapter.class.getName();
 
     private BookmarkItemBinding binding;
     private Context context;
     private List<BookmarkModel> bookmarkModelList;
+    private PublishSubject<String> bookmarkClickSubject;
 
     public BookmarkAdapter(Context context) {
         this.context = context;
+        bookmarkClickSubject = PublishSubject.create();
         bookmarkModelList = new ArrayList<>();
     }
 
@@ -39,6 +48,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
         BookmarkModel bookmarkModel = bookmarkModelList.get(position);
         holder.bindData(bookmarkModel);
         setSectionColor(holder.tvSection);
+        RxView.clicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    bookmarkClickSubject.onNext(bookmarkModel.getUrl());
+                }, e -> {
+                    Log.d(TAG, e.getMessage());
+                });
     }
 
     @Override
@@ -64,5 +79,9 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
             case "education" : section.setBackgroundColor(Color.parseColor("#ffae00")); break;
             default: section.setBackgroundColor(Color.parseColor("#439752")); break;
         }
+    }
+
+    public PublishSubject<String> getBookmarkClickSubject() {
+        return bookmarkClickSubject;
     }
 }
