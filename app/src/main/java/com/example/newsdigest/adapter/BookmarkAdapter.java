@@ -1,5 +1,6 @@
 package com.example.newsdigest.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -24,6 +25,9 @@ import io.reactivex.subjects.PublishSubject;
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
 
     private static final String TAG = BookmarkAdapter.class.getName();
+    private static final String DELETE_BOOKMARK = "Remove this news from bookmark?";
+    private static final String YES = "yes";
+    private static final String NO = "no";
 
     private BookmarkItemBinding binding;
     private Context context;
@@ -58,7 +62,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
                 });
         RxView.longClicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
-                    bookmarkLongClickSubject.onNext(bookmarkModel);
+                    openConfirmationDialog(bookmarkModel);
                 }, e -> {
                     Log.d(TAG, e.getMessage());
                 });
@@ -95,5 +99,19 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
 
     public PublishSubject<BookmarkModel> getBookmarkLongClickSubject() {
         return bookmarkLongClickSubject;
+    }
+
+    private void openConfirmationDialog(BookmarkModel bookmark) {
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setMessage(DELETE_BOOKMARK);
+        alertDialog.setCancelable(true);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, YES,
+                (dialog, which) -> {
+                    bookmarkLongClickSubject.onNext(bookmark);
+                    alertDialog.dismiss();
+                });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, NO,
+                (dialog, which) -> alertDialog.dismiss());
+        alertDialog.show();
     }
 }
