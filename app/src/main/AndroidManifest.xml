@@ -20,8 +20,8 @@
         </activity>
         <activity android:name=".activities.NewsDetailsActivity" />
         <activity android:name=".activities.LandingActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.RegisterActivity" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.BookmarkActivity" />
     </application>
 

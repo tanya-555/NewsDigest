@@ -35,6 +35,7 @@
                 android:background="@drawable/edit_text_drawable"
                 android:hint="@string/user_name"
                 android:padding="@dimen/size_10dp"
+                android:imeOptions="actionDone"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
@@ -47,7 +48,9 @@
                 android:layout_marginTop="@dimen/size_40dp"
                 android:background="@drawable/edit_text_drawable"
                 android:hint="@string/password"
+                android:inputType="textPassword"
                 android:padding="@dimen/size_10dp"
+                android:imeOptions="actionDone"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
@@ -58,9 +61,11 @@
                 android:layout_below="@+id/tv_password"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_40dp"
+                android:inputType="textPassword"
                 android:background="@drawable/edit_text_drawable"
                 android:hint="@string/confirm_password"
                 android:padding="@dimen/size_10dp"
+                android:imeOptions="actionDone"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 

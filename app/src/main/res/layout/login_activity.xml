@@ -6,11 +6,10 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/login_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/size_20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,8 +32,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_20dp"
                 android:background="@drawable/edit_text_drawable"
+                android:inputType="text"
                 android:hint="@string/user_name"
                 android:padding="@dimen/size_10dp"
+                android:imeOptions="actionDone"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 
@@ -46,8 +47,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/size_40dp"
                 android:background="@drawable/edit_text_drawable"
+                android:inputType="textPassword"
                 android:hint="@string/password"
                 android:padding="@dimen/size_10dp"
+                android:imeOptions="actionDone"
                 android:textColor="@color/color_black"
                 android:textColorHint="@color/color_login_text" />
 

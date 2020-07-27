@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -128,6 +129,7 @@ public class BookmarkActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(bookmark -> {
             bookmarkViewModel.deleteBookmark(bookmark);
+            Toast.makeText(this, "News removed from bookmark", Toast.LENGTH_LONG).show();
         }, e -> {
             Log.d(TAG, Objects.requireNonNull(e.getMessage()));
         }));
