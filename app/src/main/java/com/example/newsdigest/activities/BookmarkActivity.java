@@ -10,12 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.newsdigest.R;
 import com.example.newsdigest.adapter.BookmarkAdapter;
 import com.example.newsdigest.databinding.BookmarkActivityBinding;
 import com.example.newsdigest.models.BookmarkModel;
+import com.example.newsdigest.viewmodel.BookmarkViewModel;
+import com.example.newsdigest.viewmodelfactory.BookmarkViewModelFactory;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class BookmarkActivity extends AppCompatActivity {
     private ImageView backBtn;
     private CompositeDisposable disposable;
     private BookmarkAdapter adapter;
+    private BookmarkViewModel bookmarkViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +54,23 @@ public class BookmarkActivity extends AppCompatActivity {
         bookmarkModelList = new ArrayList<>();
         bookmarkModelList = (List<BookmarkModel>)getIntent().getExtras().getSerializable(BOOKMARK_LIST);
         ((TextView)binding.detailsToolbar.findViewById(R.id.tv_detail)).setText(R.string.toolbar_header);
+        bookmarkViewModel = new ViewModelProvider(this, new BookmarkViewModelFactory(getApplication()))
+                .get(BookmarkViewModel.class);
+        observeDeleteBookmarkViewModel(bookmarkViewModel);
         showLoadingView();
         initListener();
         initRecyclerView();
         showBookmarks();
+    }
+
+    private void observeDeleteBookmarkViewModel(BookmarkViewModel bookmarkViewModel) {
+        bookmarkViewModel.getBookmarksLiveData().observe(this, bookmarkList -> {
+            bookmarkModelList.clear();
+            if(bookmarkList != null) {
+                bookmarkModelList.addAll(bookmarkList);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -92,7 +109,7 @@ public class BookmarkActivity extends AppCompatActivity {
             adapter.setBookmarkModelList(bookmarkModelList);
             adapter.notifyDataSetChanged();
             subscribeToBookmarkClick(adapter.getBookmarkClickSubject());
-
+            subscribeToBookmarkLongClick(adapter.getBookmarkLongClickSubject());
         }
     }
 
@@ -104,6 +121,16 @@ public class BookmarkActivity extends AppCompatActivity {
                   }, e -> {
                       Log.d(TAG, Objects.requireNonNull(e.getMessage()));
                   }));
+    }
+
+    private void subscribeToBookmarkLongClick(PublishSubject<BookmarkModel> bookmarkLongClickSubject) {
+        disposable.add(bookmarkLongClickSubject.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(bookmark -> {
+            bookmarkViewModel.deleteBookmark(bookmark);
+        }, e -> {
+            Log.d(TAG, Objects.requireNonNull(e.getMessage()));
+        }));
     }
 
     private void showErrorView() {

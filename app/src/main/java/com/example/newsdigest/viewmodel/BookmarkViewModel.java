@@ -25,4 +25,8 @@ public class BookmarkViewModel extends ViewModel {
     public void insertBookmark(BookmarkModel bookmarkModel) {
         repository.insertBookmark(bookmarkModel);
     }
+
+    public void deleteBookmark(BookmarkModel bookmarkModel) {
+        repository.deleteBookmark(bookmarkModel);
+    }
 }

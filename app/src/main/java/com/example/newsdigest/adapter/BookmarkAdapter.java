@@ -29,10 +29,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
     private Context context;
     private List<BookmarkModel> bookmarkModelList;
     private PublishSubject<String> bookmarkClickSubject;
+    private PublishSubject<BookmarkModel> bookmarkLongClickSubject;
 
     public BookmarkAdapter(Context context) {
         this.context = context;
         bookmarkClickSubject = PublishSubject.create();
+        bookmarkLongClickSubject = PublishSubject.create();
         bookmarkModelList = new ArrayList<>();
     }
 
@@ -51,6 +53,12 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
         RxView.clicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> {
                     bookmarkClickSubject.onNext(bookmarkModel.getUrl());
+                }, e -> {
+                    Log.d(TAG, e.getMessage());
+                });
+        RxView.longClicks(holder.itemView).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> {
+                    bookmarkLongClickSubject.onNext(bookmarkModel);
                 }, e -> {
                     Log.d(TAG, e.getMessage());
                 });
@@ -83,5 +91,9 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkViewHolder> {
 
     public PublishSubject<String> getBookmarkClickSubject() {
         return bookmarkClickSubject;
+    }
+
+    public PublishSubject<BookmarkModel> getBookmarkLongClickSubject() {
+        return bookmarkLongClickSubject;
     }
 }
